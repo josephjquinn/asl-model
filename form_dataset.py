@@ -1,27 +1,32 @@
 import os
 import pickle
-import mediapipe as mp
 import cv2
-
+import mediapipe as mp
 
 mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 DATA_DIR = './data'
 
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+
 data = []
 labels = []
-for dir_ in os.listdir(DATA_DIR):
-    for img_path in os.listdir(os.path.join(DATA_DIR, dir_)):
+
+print("Creating dataset...")
+
+for class_dir in os.listdir(DATA_DIR):
+    class_path = os.path.join(DATA_DIR, class_dir)
+
+    if not os.path.isdir(class_path):
+        continue
+
+    for img_path in os.listdir(class_path):
         data_aux = []
 
         x_ = []
         y_ = []
 
-        img = cv2.imread(os.path.join(DATA_DIR, dir_, img_path))
+        img = cv2.imread(os.path.join(class_path, img_path))
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         results = hands.process(img_rgb)
@@ -41,8 +46,11 @@ for dir_ in os.listdir(DATA_DIR):
                     data_aux.append(y - min(y_))
 
             data.append(data_aux)
-            labels.append(dir_)
+            labels.append(class_dir)
 
-f = open('data.pickle', 'wb')
-pickle.dump({'data': data, 'labels': labels}, f)
-f.close()
+print("Dataset creation completed.")
+
+hands.close()
+
+with open('data.pickle', 'wb') as f:
+    pickle.dump({'data': data, 'labels': labels}, f)
