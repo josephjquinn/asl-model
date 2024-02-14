@@ -1,21 +1,28 @@
 import os
-
 import cv2
 
-
 DATA_DIR = './data'
+
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-number_of_classes = 3
 dataset_size = 100
-
 cap = cv2.VideoCapture(1)
-for j in range(number_of_classes):
-    if not os.path.exists(os.path.join(DATA_DIR, str(j))):
-        os.makedirs(os.path.join(DATA_DIR, str(j)))
 
-    print('Collecting data for class {}'.format(j))
+print("Type 'exit' to stop data collection")
+
+while True:
+    class_dir = input("Enter directory name for data pool: ")
+    class_path = os.path.join(DATA_DIR, class_dir)
+
+    if class_dir == "exit":
+        exit()
+
+    if not os.path.exists(class_path):
+        os.makedirs(class_path)
+
+
+    print('Collecting data for dir ' + class_dir)
 
     done = False
     while True:
@@ -31,9 +38,11 @@ for j in range(number_of_classes):
         ret, frame = cap.read()
         cv2.imshow('frame', frame)
         cv2.waitKey(25)
-        cv2.imwrite(os.path.join(DATA_DIR, str(j), '{}.jpg'.format(counter)), frame)
+        cv2.imwrite(os.path.join(class_path, '{}.jpg'.format(counter)), frame)
 
         counter += 1
+
+    print("Data collection successful")
 
 cap.release()
 cv2.destroyAllWindows()
