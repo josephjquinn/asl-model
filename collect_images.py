@@ -1,48 +1,44 @@
 import os
+import pickle
+
 import cv2
 
 DATA_DIR = './data'
-
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-dataset_size = 100
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)  # Use the default webcam
 
-print("Type 'exit' to stop data collection")
+number_of_classes = int(input("Enter the number of classes (signs): "))
+dataset_size = int(input("Enter the number of images to capture for each sign: "))
 
-while True:
-    class_dir = input("Enter directory name for data pool: ")
-    class_path = os.path.join(DATA_DIR, class_dir)
+for j in range(number_of_classes):
+    label = input("Enter the label for class {}: ".format(j))
+    label_dir = os.path.join(DATA_DIR, str(j))
+    if not os.path.exists(label_dir):
+        os.makedirs(label_dir)
 
-    if class_dir == "exit":
-        exit()
-
-    if not os.path.exists(class_path):
-        os.makedirs(class_path)
-
-
-    print('Collecting data for dir ' + class_dir)
+    print('Collecting data for class {}: {}'.format(j, label))
 
     done = False
-    while True:
+    while not done:
         ret, frame = cap.read()
         cv2.putText(frame, 'Ready? Press "Q" ! :)', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3,
                     cv2.LINE_AA)
         cv2.imshow('frame', frame)
         if cv2.waitKey(25) == ord('q'):
-            break
+            done = True
 
     counter = 0
     while counter < dataset_size:
         ret, frame = cap.read()
+        cv2.putText(frame, 'Signing for: {}'.format(label), (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3,
+                    cv2.LINE_AA)
         cv2.imshow('frame', frame)
         cv2.waitKey(25)
-        cv2.imwrite(os.path.join(class_path, '{}.jpg'.format(counter)), frame)
+        cv2.imwrite(os.path.join(label_dir, '{}_{}.jpg'.format(label, counter)), frame)
 
         counter += 1
-
-    print("Data collection successful")
 
 cap.release()
 cv2.destroyAllWindows()
