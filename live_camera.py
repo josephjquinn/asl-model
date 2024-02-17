@@ -70,19 +70,18 @@ while True:
         x2 = int(max(x_) * W) - 10
         y2 = int(max(y_) * H) - 10
 
-        prediction_proba = model.predict_proba([np.asarray(data_aux)])[0]
-        predicted_class_index = int(np.argmax(prediction_proba))
-        predicted_character = labels_dict[predicted_class_index]
-        confidence = prediction_proba[predicted_class_index]
+        proba = model.predict_proba([np.asarray(data_aux)])[0]
+        predicted_class = np.argmax(proba)
+        confidence = proba[predicted_class]
+        predicted_character = labels_dict[predicted_class]
 
-        # Add a margin below the text and the bounding box
-        margin = 40
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, f"{predicted_character} ({confidence:.2f})", (x1, y1 - margin), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
-                    cv2.LINE_AA)
+        text = f"{predicted_character} ({confidence:.2f})"
+        cv2.putText(frame, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
     cv2.waitKey(1)
+
 
 cap.release()
 cv2.destroyAllWindows()
