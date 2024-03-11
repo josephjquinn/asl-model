@@ -4,7 +4,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-model_dict = pickle.load(open("premade-model/h_iModel.p", "rb"))
+model_dict = pickle.load(open("./h_iModel.p", "rb"))
 model = model_dict["model"]
 
 # Set parameter to 0,1,2,3 based on your webcam configuration
