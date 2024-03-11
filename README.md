@@ -1,6 +1,6 @@
 # Hand Gesture Recognition using Mediapipe and Random Forest Classifier
 
-Hand Gesture Recognition is a project aimed at recognizing hand gestures in real-time using computer vision techniques and machine learning algorithms. This project utilizes the Mediapipe library for hand tracking and landmark detection, and a Random Forest classifier for gesture classification.
+This project is aimed at recognizing hand gestures in real-time using computer vision techniques and machine learning algorithms. This project utilizes the Mediapipe library for hand tracking and landmark detection, and a Random Forest classifier for gesture classification.
 
 ## Table of Contents
 
