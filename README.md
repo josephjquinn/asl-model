@@ -13,6 +13,10 @@ Hand Gesture Recognition is a project aimed at recognizing hand gestures in real
 
 Hand Gesture Recognition is a project designed to enable real-time interpretation of hand gestures using computer vision and machine learning techniques. By harnessing the capabilities of the Mediapipe library for hand tracking and the Random Forest classifier for gesture classification, this project offers a simple yet effective solution for recognizing and understanding hand gestures.
 
+![Figure_1](https://github.com/josephjquinn/asl-model/assets/81782398/651c56d5-bbc7-49d0-971b-fa75aba3a667)
+![Figure_2](https://github.com/josephjquinn/asl-model/assets/81782398/9f25fc88-c3d2-4b69-933c-18239dc2dae2)
+![Figure_3](https://github.com/josephjquinn/asl-model/assets/81782398/86428435-dec7-4268-a8ae-bc672fabcc3a)
+
 ## Features
 
 - Real-time hand gesture recognition using webcam input.
