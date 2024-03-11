@@ -4,9 +4,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-DATA_DIR = "./data"
-
-model_dict = pickle.load(open("./model.p", "rb"))
+model_dict = pickle.load(open("premade-model/h_iModel.p", "rb"))
 model = model_dict["model"]
 
 # Set parameter to 0,1,2,3 based on your webcam configuration
@@ -18,15 +16,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-labels_dict = {}
-for label in os.listdir(DATA_DIR):
-    label_dir = os.path.join(DATA_DIR, label)
-    if os.path.isdir(label_dir):
-        first_filename = os.listdir(label_dir)[0]
-        class_name = first_filename.split("_")[0]
-        labels_dict[int(label)] = class_name
-
-print(labels_dict)
+labels_dict = {0: "A", 7: "H", 6: "G", 1: "B", 8: "I", 4: "E", 3: "D", 2: "C", 5: "F"}
 
 while True:
 

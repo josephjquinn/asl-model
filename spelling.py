@@ -5,11 +5,12 @@ import mediapipe as mp
 import numpy as np
 import time
 
-DATA_DIR = './data'
+DATA_DIR = "./data"
 
-model_dict = pickle.load(open('./model.p', 'rb'))
-model = model_dict['model']
+model_dict = pickle.load(open("./model.p", "rb"))
+model = model_dict["model"]
 
+# Set parameter to 0,1,2,3 based on your webcam configuration
 cap = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
@@ -22,15 +23,13 @@ labels_dict = {}
 for label in os.listdir(DATA_DIR):
     label_dir = os.path.join(DATA_DIR, label)
     if os.path.isdir(label_dir):
-        # Get the first filename in the directory
         first_filename = os.listdir(label_dir)[0]
-        # Extract class name from the first filename
-        class_name = first_filename.split('_')[0]
+        class_name = first_filename.split("_")[0]
         labels_dict[int(label)] = class_name
 
-spelled_word = ""  # Initialize spelled word
-last_prediction_time = time.time()  # Initialize time of last prediction
-last_predicted_letter = None  # Initialize last predicted letter
+spelled_word = ""
+last_prediction_time = time.time()
+last_predicted_letter = None
 
 while True:
     data_aux = []
@@ -47,11 +46,12 @@ while True:
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
-                frame,  # image to draw
-                hand_landmarks,  # model output
-                mp_hands.HAND_CONNECTIONS,  # hand connections
+                frame,
+                hand_landmarks,
+                mp_hands.HAND_CONNECTIONS,
                 mp_drawing_styles.get_default_hand_landmarks_style(),
-                mp_drawing_styles.get_default_hand_connections_style())
+                mp_drawing_styles.get_default_hand_connections_style(),
+            )
 
         for hand_landmarks in results.multi_hand_landmarks:
             for i in range(len(hand_landmarks.landmark)):
@@ -78,7 +78,6 @@ while True:
         predicted_letter = labels_dict[predicted_class_index]
         confidence = prediction_proba[predicted_class_index]
 
-        # Add recognized letter to the spelled word if the predicted letter remains the same for 3 seconds
         if predicted_letter == last_predicted_letter:
             if time.time() - last_prediction_time >= 1.5:
                 spelled_word += predicted_letter
@@ -87,17 +86,31 @@ while True:
             last_predicted_letter = predicted_letter
             last_prediction_time = time.time()
 
-        # Display spelled word on the screen
-        cv2.putText(frame, f"Spelled Word: {spelled_word}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3)
+        cv2.putText(
+            frame,
+            f"Spelled Word: {spelled_word}",
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.3,
+            (0, 0, 0),
+            3,
+        )
 
-        # Add a margin below the bounding box
         margin = 40
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, f"{predicted_letter} ({confidence:.2f})", (x1, y1 - margin), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
-                    cv2.LINE_AA)
+        cv2.putText(
+            frame,
+            f"{predicted_letter} ({confidence:.2f})",
+            (x1, y1 - margin),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.3,
+            (0, 0, 0),
+            3,
+            cv2.LINE_AA,
+        )
 
-    cv2.imshow('frame', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imshow("frame", frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
 cap.release()

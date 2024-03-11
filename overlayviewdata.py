@@ -10,13 +10,13 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-DATA_DIR = './data'
+DATA_DIR = "./data"
 
 for dir_ in os.listdir(DATA_DIR):
     dir_path = os.path.join(DATA_DIR, dir_)
-    processed_image = False  # Flag to track if an image has been processed in the directory
+    processed_image = False
     for img_path in os.listdir(dir_path):
-        if processed_image:  # If an image has already been processed, break out of the loop
+        if processed_image:
             break
 
         label = img_path[0]
@@ -33,14 +33,14 @@ for dir_ in os.listdir(DATA_DIR):
                     hand_landmarks,
                     mp_hands.HAND_CONNECTIONS,
                     mp_drawing_styles.get_default_hand_landmarks_style(),
-                    mp_drawing_styles.get_default_hand_connections_style()
+                    mp_drawing_styles.get_default_hand_connections_style(),
                 )
 
             # Display the original image with landmarks
             plt.figure()
             plt.imshow(img_rgb)  # Display the original image with hand landmarks
             plt.title(label)  # Set the title as the directory name
-            plt.axis('off')  # Turn off axis
+            plt.axis("off")  # Turn off axis
             plt.show()
 
         processed_image = True  # Set the flag to indicate that an image has been processed in the directory
