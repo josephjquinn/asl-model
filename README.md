@@ -30,7 +30,7 @@ Hand Gesture Recognition is a project designed to enable real-time interpretatio
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/hand-gesture-recognition.git](https://github.com/josephjquinn/asl-model)
+   git clone https://github.com/josephjquinn/asl-model
    ```
 
 2. Install dependencies:
